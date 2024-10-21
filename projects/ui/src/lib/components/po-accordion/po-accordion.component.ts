@@ -103,7 +103,7 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
     if (this.showManagerAccordion) {
       const accordionList = this.poAccordionItems.toArray();
       const accordionsValids = accordionList.filter(item => !item.disabledItem);
-      const allItemsExpanded = accordionsValids.every(item => item.expanded === true);
+      const allItemsExpanded = accordionsValids.every(item => item.expanded == true);
       if (allItemsExpanded) {
         this.expandedAllItems = event;
       } else {
