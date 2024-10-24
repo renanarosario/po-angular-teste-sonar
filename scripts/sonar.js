@@ -46,8 +46,8 @@ task('sonarqube', callback => {
       'sonar.sources': 'projects',
       'sonar.exclusions': exclusions,
       'sonar.typescript.lcov.reportPaths': lcovReportPaths,
-      'sonar.scm.exclusions.disabled': 'false',
-      'sonar.pullrequest.analyzeAllFiles': 'false'
+      'sonar.scm.exclusions.disabled': 'true',
+      'sonar.pullrequest.analyzeAllFiles': 'true'
     };
 
     // Adiciona os parâmetros de Pull Request se for uma análise de PR
@@ -57,7 +57,7 @@ task('sonarqube', callback => {
       sonarOptions['sonar.pullrequest.base'] = pullRequestBase;
     }
 
-    console.log('SONAR: ', sonarOptions)
+    console.log('SONAR:', sonarOptions)
 
     scanner(
       {

@@ -144,7 +144,7 @@ jobs:
             "sonar.pullrequest.key": "${{ github.event.pull_request.number }}",
             "sonar.pullrequest.branch": "${{ github.head_ref }}",
             "sonar.pullrequest.base": "${{ github.base_ref }}",
-            "sonar.scm.exclusions.disabled": "false"
+            "sonar.scm.exclusions.disabled": "true"
           }'
           npm run sonarqube -- --url=${{ secrets.SONAR_HOST_URL }} --projectKey=${{ secrets.SONAR_PROJECT_KEY }} --token=${{ secrets.SONAR_TOKEN }}
 
