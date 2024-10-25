@@ -17,9 +17,19 @@ task('sonarqube', callback => {
 
     // Novos parâmetros para Pull Request
     // const pullRequestKey = argv.pullrequestKey || process.env.GITHUB_EVENT_PULL_REQUEST_NUMBER;
-    const pullRequestBranch = argv.pullrequestBranch || process.env.GITHUB_HEAD_REF;
-    const pullRequestBase = argv.pullrequestBase || process.env.GITHUB_BASE_REF;
+    // const pullRequestBranch = argv.pullrequestBranch || process.env.GITHUB_HEAD_REF;
+    // const pullRequestBase = argv.pullrequestBase || process.env.GITHUB_BASE_REF;
 
+    // console.log('pullRequestBranch', pullRequestBranch);
+    // console.log('pullRequestBase', pullRequestBase);
+
+    const sonarParams = process.env.SONAR_SCANNER_JSON_PARAMS ? JSON.parse(process.env.SONAR_SCANNER_JSON_PARAMS) : {};
+
+    const pullRequestKey = argv.pullrequestKey || sonarParams['sonar.pullrequest.key'];
+    const pullRequestBranch = argv.pullrequestBranch || sonarParams['sonar.pullrequest.branch'];
+    const pullRequestBase = argv.pullrequestBase || sonarParams['sonar.pullrequest.base'];
+
+    console.log('pullRequestKey', pullRequestKey);
     console.log('pullRequestBranch', pullRequestBranch);
     console.log('pullRequestBase', pullRequestBase);
 
@@ -54,8 +64,8 @@ task('sonarqube', callback => {
     };
 
     // Adiciona os parâmetros de Pull Request se for uma análise de PR
-    if (pullRequestBranch && pullRequestBase) {
-      // sonarOptions['sonar.pullrequest.key'] = pullRequestKey;
+    if (pullRequestKey && pullRequestBranch && pullRequestBase) {
+      sonarOptions['sonar.pullrequest.key'] = pullRequestKey;
       sonarOptions['sonar.pullrequest.branch'] = pullRequestBranch;
       sonarOptions['sonar.pullrequest.base'] = pullRequestBase;
     }
