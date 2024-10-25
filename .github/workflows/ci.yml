@@ -280,6 +280,7 @@ jobs:
           SONAR_PROJECT_KEY: ${{secrets.SONAR_PROJECT_KEY}}
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
-          curl -u "${SONAR_TOKEN}:" -X POST "${SONAR_HOST_URL}/api/project_branches/delete" \
-            -d "project=${SONAR_PROJECT_KEY}" \
-            -d "branch=${BRANCH_NAME}"
+          curl -u "${SONAR_TOKEN}:" -X POST "${{ secrets.SONAR_HOST_URL }}/api/project_branches/delete" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "project=${{secrets.SONAR_PROJECT_KEY}}" \
+            -d "branch=${{ github.head_ref }}"
