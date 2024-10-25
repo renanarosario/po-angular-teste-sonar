@@ -16,7 +16,7 @@ task('sonarqube', callback => {
     const projectKey = validateArgument(argv.projectKey, 'projectKey');
 
     // Novos parâmetros para Pull Request
-    // const pullRequestKey = argv.pullrequestKey || process.env.GITHUB_EVENT_PULL_REQUEST_NUMBER;
+    const pullRequestKey = argv.pullrequestKey || process.env.GITHUB_EVENT_PULL_REQUEST_NUMBER;
     const pullRequestBranch = argv.pullrequestBranch || process.env.GITHUB_HEAD_REF;
     const pullRequestBase = argv.pullrequestBase || process.env.GITHUB_BASE_REF;
 
@@ -54,11 +54,11 @@ task('sonarqube', callback => {
     };
 
     // Adiciona os parâmetros de Pull Request se for uma análise de PR
-    if (pullRequestBranch && pullRequestBase) {
-      // sonarOptions['sonar.pullrequest.key'] = pullRequestKey;
-      sonarOptions['sonar.pullrequest.branch'] = pullRequestBranch;
-      sonarOptions['sonar.pullrequest.base'] = pullRequestBase;
-    }
+    // if (pullRequestBranch && pullRequestBase) {
+    //   // sonarOptions['sonar.pullrequest.key'] = pullRequestKey;
+    //   sonarOptions['sonar.pullrequest.branch'] = pullRequestBranch;
+    //   sonarOptions['sonar.pullrequest.base'] = pullRequestBase;
+    // }
 
     console.log('SONAR:', sonarOptions);
 
