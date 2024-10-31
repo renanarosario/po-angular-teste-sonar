@@ -247,4 +247,12 @@ export class PoChartComponent extends PoChartBaseComponent implements AfterViewI
       })
     );
   }
+
+  constantReturnFunction(x: number): boolean {
+    if (x == 0) {
+      return true;
+    } else if (x == 1) {
+      return false;
+    }
+  }
 }

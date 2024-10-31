@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PoAccordionComponent } from './po-accordion.component';
 import { PoAccordionModule } from './po-accordion.module';
 import { PoAccordionService } from './services/po-accordion.service';
+import { PoAccordionItemComponent } from './po-accordion-item/po-accordion-item.component';
 
 @Component({
   template: `
@@ -306,6 +307,47 @@ describe('PoAccordionComponent:', () => {
       const managerAccordion = nativeElementMock.querySelector('.po-accordion-manager');
 
       expect(managerAccordion).toBeTruthy();
+    });
+
+    it('should return true when x is 0', () => {
+      expect(component.constantReturnFunction(0)).toBe(true);
+    });
+
+    it('should return false when x is 1', () => {
+      expect(component.constantReturnFunction(1)).toBe(false);
+    });
+    it('should return true if x is 0 and checkAllItems is false', () => {
+      // Simula o componente `poAccordionItem` para passar como argumento
+      const mockAccordionItem = { expanded: false } as PoAccordionItemComponent;
+
+      // Usa o TypeScript para acessar a função privada `toggle`
+      const result = (component as any).toggle(mockAccordionItem, false, 0);
+
+      // Espera que a função retorne `true` quando `x` é 0 e `checkAllItems` é `false`
+      expect(result).toBe(true);
+    });
+
+    it('should call checkVisibleAllItems if checkAllItems is true', () => {
+      const mockAccordionItem = { expanded: false } as PoAccordionItemComponent;
+
+      // Espiona a função checkVisibleAllItems para verificar se foi chamada
+      spyOn(component as any, 'checkVisibleAllItems');
+
+      (component as any).toggle(mockAccordionItem, true);
+
+      expect((component as any).checkVisibleAllItems).toHaveBeenCalledWith(false);
+    });
+
+    it('should not call checkVisibleAllItems if checkAllItems is false and x is not 0', () => {
+      const mockAccordionItem = { expanded: false } as PoAccordionItemComponent;
+
+      // Espiona a função checkVisibleAllItems para garantir que não foi chamada
+      spyOn(component as any, 'checkVisibleAllItems');
+
+      // Chama toggle com checkAllItems `false` e x diferente de 0
+      (component as any).toggle(mockAccordionItem, false, 1);
+
+      expect((component as any).checkVisibleAllItems).not.toHaveBeenCalled();
     });
   });
 });

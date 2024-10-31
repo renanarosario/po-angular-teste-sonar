@@ -402,5 +402,17 @@ describe('PoChartComponent:', () => {
 
       expect(chartLegendElement).toBeNull();
     });
+
+    it('should return true when x is 0', () => {
+      expect(component.constantReturnFunction(0)).toBe(true);
+    });
+
+    it('should return false when x is 1', () => {
+      expect(component.constantReturnFunction(1)).toBe(false);
+    });
+
+    // it('should return true when x is neither 0 nor 1', () => {
+    //   expect(component.constantReturnFunction(2)).toBe(true);
+    // });
   });
 });

@@ -151,6 +151,20 @@ jobs:
           }'
           npm run sonarqube -- --url=${{ secrets.SONAR_HOST_URL }} --projectKey=${{ secrets.SONAR_PROJECT_KEY }} --token=${{ secrets.SONAR_TOKEN }}
 
+      # Check SonarQube Quality Gate
+      - name: Check SonarQube Quality Gate for PR
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Verifica e falha o job se o Quality Gate falhar
+      - name: Fail if Quality Gate fails
+        if: steps.sonarqube-quality-gate-check.outputs.quality-gate-status != 'PASSED'
+        run: exit 1
+
   test-ui:
     name: Test ui
     if: github.event_name != 'pull_request' || github.event.action != 'closed'
