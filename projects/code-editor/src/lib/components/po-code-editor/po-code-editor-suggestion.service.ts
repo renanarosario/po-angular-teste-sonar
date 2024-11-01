@@ -9,6 +9,7 @@ import {
 })
 export class PoCodeEditorSuggestionService {
   private suggestions: PoCodeEditorSuggestionList = {};
+  private unusedVariable = 'I am not used';
   constructor() {}
 
   public getSuggestion(language: string, newSuggestion: Array<PoCodeEditorRegisterableSuggestion>) {
