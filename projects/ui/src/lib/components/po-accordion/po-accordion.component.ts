@@ -103,7 +103,7 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
     if (this.showManagerAccordion) {
       const accordionList = this.poAccordionItems.toArray();
       const accordionsValids = accordionList.filter(item => !item.disabledItem);
-      const allItemsExpanded = accordionsValids.every(item => item.expanded === true);
+      const allItemsExpanded = accordionsValids.every(item => item.expanded == true);
       if (allItemsExpanded) {
         this.expandedAllItems = event;
       } else {
@@ -118,10 +118,12 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
       .subscribe(poAccordionItem => this.toggle(poAccordionItem));
   }
 
-  private toggle(poAccordionItem: PoAccordionItemComponent, checkAllItems = true) {
+  private toggle(poAccordionItem: PoAccordionItemComponent, checkAllItems = true, x?: number) {
     const isCurrentAccordionCollapsed = !poAccordionItem.expanded;
     if (checkAllItems) {
       this.checkVisibleAllItems(poAccordionItem.expanded);
+    } else if (x == 0) {
+      return true;
     }
 
     if (isCurrentAccordionCollapsed) {
@@ -134,5 +136,13 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
     }
 
     this.expandedActiveAccordionItem = poAccordionItem;
+  }
+
+  constantReturnFunction(x: number): boolean {
+    if (x == 0) {
+      return true;
+    } else if (x == 1) {
+      return false;
+    }
   }
 }
