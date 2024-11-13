@@ -15,23 +15,11 @@ task('sonarqube', callback => {
     const url = validateArgument(argv.url, 'url');
     const projectKey = validateArgument(argv.projectKey, 'projectKey');
 
-    // Novos parâmetros para Pull Request
-    // const pullRequestKey = argv.pullrequestKey || process.env.GITHUB_EVENT_PULL_REQUEST_NUMBER;
-    // const pullRequestBranch = argv.pullrequestBranch || process.env.GITHUB_HEAD_REF;
-    // const pullRequestBase = argv.pullrequestBase || process.env.GITHUB_BASE_REF;
-
-    // console.log('pullRequestBranch', pullRequestBranch);
-    // console.log('pullRequestBase', pullRequestBase);
-
     const sonarParams = process.env.SONAR_SCANNER_JSON_PARAMS ? JSON.parse(process.env.SONAR_SCANNER_JSON_PARAMS) : {};
 
     const pullRequestKey = argv.pullrequestKey || sonarParams['sonar.pullrequest.key'];
     const pullRequestBranch = argv.pullrequestBranch || sonarParams['sonar.pullrequest.branch'];
     const pullRequestBase = argv.pullrequestBase || sonarParams['sonar.pullrequest.base'];
-
-    console.log('pullRequestKey', pullRequestKey);
-    console.log('pullRequestBranch', pullRequestBranch);
-    console.log('pullRequestBase', pullRequestBase);
 
     const exclusions = [
       '**/node_modules/**',

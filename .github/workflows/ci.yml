@@ -128,28 +128,28 @@ jobs:
       - name: Verificar arquivos de cobertura
         run: ls -la coverage/code-editor/lcov.info coverage/storage/lcov.info coverage/sync/lcov.info coverage/templates/lcov.info coverage/ui/lcov.info
 
-      # Executa o script do Gulp para o SonarQube
-      # - name: Run SonarQube
-      #   run: npm run sonarqube -- --url=${{ secrets.SONAR_HOST_URL }} --projectKey=${{ secrets.SONAR_PROJECT_KEY }} --token=${{ secrets.SONAR_TOKEN }}
-
-      # - name: Run SonarQube for PR
-      #   run: |
-      #     export SONARQUBE_SCANNER_PARAMS='{
-      #       "sonar.pullrequest.key": "${{ github.event.pull_request.number }}",
-      #       "sonar.pullrequest.branch": "${{ github.head_ref }}",
-      #       "sonar.pullrequest.base": "${{ github.base_ref }}"
-      #     }'
-      #     npm run sonarqube -- --url=${{ secrets.SONAR_HOST_URL }} --projectKey=${{ secrets.SONAR_PROJECT_KEY }} --token=${{ secrets.SONAR_TOKEN }}
-
-      - name: Run full SonarQube analysis
+      - name: Run SonarQube for PR
         run: |
-          export SONAR_SCANNER_JSON_PARAMS='{
+          export SONARQUBE_SCANNER_PARAMS='{
             "sonar.pullrequest.key": "${{ github.event.pull_request.number }}",
             "sonar.pullrequest.branch": "${{ github.head_ref }}",
-            "sonar.pullrequest.base": "${{ github.base_ref }}",
-            "sonar.scm.exclusions.disabled": "true"
+            "sonar.pullrequest.base": "${{ github.base_ref }}"
           }'
           npm run sonarqube -- --url=${{ secrets.SONAR_HOST_URL }} --projectKey=${{ secrets.SONAR_PROJECT_KEY }} --token=${{ secrets.SONAR_TOKEN }}
+
+      # Verifica o Quality Gate
+      - name: Check SonarQube Quality Gate for PR
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Fails the job if the Quality Gate fails
+      - name: Fail if Quality Gate fails
+        if: steps.sonarqube-quality-gate-check.outputs.quality-gate-status != 'PASSED'
+        run: exit 1
 
   test-ui:
     name: Test ui
@@ -269,18 +269,18 @@ jobs:
           path: coverage/sync/lcov.info
 
   # Job para excluir a ramificação do SonarQube após o merge
-  delete_sonar_branch:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Excluir Ramificação do SonarQube
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT_KEY: ${{secrets.SONAR_PROJECT_KEY}}
-          BRANCH_NAME: ${{ github.head_ref }}
-        run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}:" -X POST "${{ secrets.SONAR_HOST_URL }}/api/project_branches/delete" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            -d "project=${{secrets.SONAR_PROJECT_KEY}}" \
-            -d "branch=${{ github.head_ref }}"
+  # delete_sonar_branch:
+  #   if: github.event.pull_request.merged == true
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: Excluir Ramificação do SonarQube
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  #         SONAR_PROJECT_KEY: ${{secrets.SONAR_PROJECT_KEY}}
+  #         BRANCH_NAME: ${{ github.head_ref }}
+  #       run: |
+  #         curl -u "${{ secrets.SONAR_TOKEN }}:" -X POST "${{ secrets.SONAR_HOST_URL }}/api/project_branches/delete" \
+  #           -H "Content-Type: application/x-www-form-urlencoded" \
+  #           -d "project=${{secrets.SONAR_PROJECT_KEY}}" \
+  #           -d "branch=${{ github.head_ref }}"

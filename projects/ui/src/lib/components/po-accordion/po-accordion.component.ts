@@ -135,4 +135,14 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
 
     this.expandedActiveAccordionItem = poAccordionItem;
   }
+
+  constantReturnFunction(x: string): object {
+    // Comparação não estrita e retorno com problemas
+    if (x == 'howdy') {
+      return { status: 'true' };
+    } else if (x == 'hello') {
+      return { status: 'false' };
+    }
+
+  }
 }
