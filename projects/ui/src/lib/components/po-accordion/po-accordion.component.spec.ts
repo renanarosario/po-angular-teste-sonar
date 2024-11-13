@@ -307,5 +307,13 @@ describe('PoAccordionComponent:', () => {
 
       expect(managerAccordion).toBeTruthy();
     });
+
+    it('should return true when x is 0', () => {
+      expect(component.constantReturnFunction(0)).toBe(true);
+    });
+
+    it('should return false when x is 1', () => {
+      expect(component.constantReturnFunction(1)).toBe(false);
+    });
   });
 });
