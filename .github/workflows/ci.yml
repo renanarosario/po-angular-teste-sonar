@@ -267,20 +267,3 @@ jobs:
         with:
           name: sync-coverage
           path: coverage/sync/lcov.info
-
-  # Job para excluir a ramificação do SonarQube após o merge
-  delete_sonar_branch:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Excluir Ramificação do SonarQube
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT_KEY: ${{secrets.SONAR_PROJECT_KEY}}
-          BRANCH_NAME: ${{ github.head_ref }}
-        run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}:" -X POST "${{ secrets.SONAR_HOST_URL }}/api/project_branches/delete" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            -d "project=${{secrets.SONAR_PROJECT_KEY}}" \
-            -d "branch=${{ github.head_ref }}"

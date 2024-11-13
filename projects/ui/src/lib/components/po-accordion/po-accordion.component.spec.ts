@@ -14,7 +14,7 @@ import { PoAccordionService } from './services/po-accordion.service';
     </po-accordion>
   `
 })
-class PoAccordionMockComponent {}
+class PoAccordionMockComponent { }
 
 describe('PoAccordionComponent:', () => {
   let component: PoAccordionComponent;
@@ -157,7 +157,7 @@ describe('PoAccordionComponent:', () => {
       };
 
       const fakeThis = {
-        toggle: arg => {},
+        toggle: arg => { },
         accordionServiceSubscription: undefined,
         accordionService: {
           receiveFromChildAccordionClicked: () => ({ subscribe: callback => callback(poAccordionItem) })
@@ -248,12 +248,12 @@ describe('PoAccordionComponent:', () => {
     it('toggle: should call `expandedActiveAccordionItem.collapse` if `expandedActiveAccordionItem` is defined', () => {
       const expandedActiveAccordionItem = {
         expanded: true,
-        collapse: () => {}
+        collapse: () => { }
       };
 
       const currentAccordionItem = {
         expanded: true,
-        collapse: () => {}
+        collapse: () => { }
       };
 
       spyOn(expandedActiveAccordionItem, 'collapse');
@@ -271,7 +271,7 @@ describe('PoAccordionComponent:', () => {
     it('toggle: should set `expandedActiveAccordionItem` to currentAccordionItem', () => {
       const currentAccordionItem = {
         expanded: true,
-        collapse: () => {}
+        collapse: () => { }
       };
 
       component['expandedActiveAccordionItem'] = undefined;
@@ -306,6 +306,14 @@ describe('PoAccordionComponent:', () => {
       const managerAccordion = nativeElementMock.querySelector('.po-accordion-manager');
 
       expect(managerAccordion).toBeTruthy();
+    });
+
+    it('should return true when x is 0', () => {
+      expect(component.constantReturnFunction(0)).toBe(true);
+    });
+
+    it('should return false when x is 1', () => {
+      expect(component.constantReturnFunction(1)).toBe(false);
     });
   });
 });

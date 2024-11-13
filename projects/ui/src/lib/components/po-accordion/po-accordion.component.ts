@@ -135,4 +135,12 @@ export class PoAccordionComponent extends PoAccordionBaseComponent implements On
 
     this.expandedActiveAccordionItem = poAccordionItem;
   }
+
+  constantReturnFunction(x: number): boolean {
+    if (x == 0) {
+      return true;
+    } else if (x == 1) {
+      return false;
+    }
+  }
 }
