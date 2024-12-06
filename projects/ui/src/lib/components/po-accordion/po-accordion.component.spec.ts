@@ -307,5 +307,20 @@ describe('PoAccordionComponent:', () => {
 
       expect(managerAccordion).toBeTruthy();
     });
+
+    it('deve retornar { status: "true" } quando x == "howdy"', () => {
+      const result = component.constantReturnFunction('howdy');
+      expect(result).toEqual({ status: 'true' });
+    });
+
+    it('deve retornar { status: "false" } quando x == "hello"', () => {
+      const result = component.constantReturnFunction('hello');
+      expect(result).toEqual({ status: 'false' });
+    });
+
+    // it('deve retornar null quando x não for "howdy" nem "hello"', () => {
+    //   const result = component.constantReturnFunction('otherValue');
+    //   expect(result).toBeNull();
+    // });
   });
 });
